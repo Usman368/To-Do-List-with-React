@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <title>To Do</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+
+      class App extends React.Component  {
+        constructor(props){
+          super(props);
+          this.state = {
+            tasks: [], 
+            input: ""
+          }
+        }
+    
+        render(){
+            return(
+                <div>
+                    <h1>Tasks</h1>
+                    <ul>
+                        {
+                            this.state.tasks.map( (task, i)=>
+                             <li key={i}>
+                              <button data-index={i} onClick={this.daleteTask}>Delete</button>
+                                {task}
+                             </li>
+                             )}
+                    </ul>
+                    <div>
+                        <input onChange={this.handleChange} value={this.state.input} />
+                        <button onClick={this.addTasks}>Add Task</button>
+                    </div>
+                    Number of Tasks:{ this.state.tasks.length }
+                </div>
+            );
+        }
+
+        handleChange = (event)=> {
+            this.setState({
+                input: event.target.value   
+            }); 
+        }
+
+        addTasks = ()=>{
+            this.setState(state=> ({
+                tasks: [...state.tasks , state.input],
+                input: ""
+            }));
+        }
+
+        daleteTask = (event)=> {
+            const index = event.target.dataset.index;
+            this.setState(state =>{
+              const tasks = [...state.tasks];
+              tasks.splice(index, 1);
+              return{
+                tasks: tasks
+              }
+            });
+        }
+    }   
+
+      ReactDOM.render(<App/> , document.querySelector("#app"));
+    </script>
+  </body> 
+</html>
